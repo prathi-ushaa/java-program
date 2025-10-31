@@ -155,4 +155,136 @@ public class HospitalManagement {
                     rs.getDate("appointment_date"));
         }
     }
+
 }
+#for data base table in mysql connector
+
+    -- ==============================
+-- Create Database
+-- ==============================
+CREATE DATABASE hospital_db;
+USE hospital_db;
+
+-- ==============================
+-- Table: Patient
+-- ==============================
+CREATE TABLE patient (
+    patient_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    age INT,
+    gender VARCHAR(10),
+    disease VARCHAR(100),
+    admission_date DATE,
+    discharge_date DATE
+);
+
+-- ==============================
+-- Table: Doctor
+-- ==============================
+CREATE TABLE doctor (
+    doctor_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    specialization VARCHAR(100),
+    phone VARCHAR(15)
+);
+
+-- ==============================
+-- Table: Room
+-- ==============================
+CREATE TABLE room (
+    room_id INT AUTO_INCREMENT PRIMARY KEY,
+    room_type VARCHAR(50),
+    room_charge DECIMAL(10,2),
+    availability BOOLEAN DEFAULT TRUE
+);
+
+-- ==============================
+-- Table: Appointment
+-- ==============================
+CREATE TABLE appointment (
+    appointment_id INT AUTO_INCREMENT PRIMARY KEY,
+    patient_id INT,
+    doctor_id INT,
+    appointment_date DATE,
+    FOREIGN KEY (patient_id) REFERENCES patient(patient_id) ON DELETE CASCADE,
+    FOREIGN KEY (doctor_id) REFERENCES doctor(doctor_id) ON DELETE CASCADE
+);
+
+-- ==============================
+-- Table: Bill
+-- ==============================
+CREATE TABLE bill (
+    bill_id INT AUTO_INCREMENT PRIMARY KEY,
+    patient_id INT,
+    room_id INT,
+    total_amount DECIMAL(10,2),
+    payment_status VARCHAR(20) DEFAULT 'Pending',
+    FOREIGN KEY (patient_id) REFERENCES patient(patient_id) ON DELETE CASCADE,
+    FOREIGN KEY (room_id) REFERENCES room(room_id) ON DELETE SET NULL
+);
+
+-- ==============================
+-- Insert Sample Data
+-- ==============================
+-- Patients
+INSERT INTO patient (name, age, gender, disease, admission_date, discharge_date) VALUES
+('John Doe', 45, 'Male', 'Fever', '2025-08-20', NULL),
+('Alice Smith', 30, 'Female', 'Fracture', '2025-08-25', NULL),
+('Robert Brown', 60, 'Male', 'Diabetes', '2025-08-28', '2025-09-01');
+
+-- Doctors
+INSERT INTO doctor (name, specialization, phone) VALUES
+('Dr. Sharma', 'Cardiologist', '9876543210'),
+('Dr. Priya', 'Orthopedic', '9123456780'),
+('Dr. Khan', 'Physician', '9988776655');
+
+-- Rooms
+INSERT INTO room (room_type, room_charge, availability) VALUES
+('General', 500.00, TRUE),
+('ICU', 3000.00, TRUE),
+('Private', 1500.00, TRUE);
+
+-- Appointments
+INSERT INTO appointment (patient_id, doctor_id, appointment_date) VALUES
+(1, 3, '2025-08-21'),
+(2, 2, '2025-08-26'),
+(3, 1, '2025-08-29');
+
+-- Bills
+INSERT INTO bill (patient_id, room_id, total_amount, payment_status) VALUES
+(1, 1, 2000.00, 'Paid'),
+(2, 3, 5000.00, 'Pending'),
+(3, 2, 12000.00, 'Paid');
+
+-- ==============================
+-- Useful Queries
+-- ==============================
+
+-- 1. View all patients
+SELECT * FROM patient;
+
+-- 2. View all doctors
+SELECT * FROM doctor;
+
+-- 3. View all appointments (with patient & doctor names)
+SELECT a.appointment_id, p.name AS patient, d.name AS doctor, a.appointment_date
+FROM appointment a
+JOIN patient p ON a.patient_id = p.patient_id
+JOIN doctor d ON a.doctor_id = d.doctor_id;
+
+-- 4. View all bills with patient & room details
+SELECT b.bill_id, p.name AS patient, r.room_type, b.total_amount, b.payment_status
+FROM bill b
+JOIN patient p ON b.patient_id = p.patient_id
+LEFT JOIN room r ON b.room_id = r.room_id;
+
+-- 5. Find patients who have not been discharged yet
+SELECT name, disease, admission_date
+FROM patient
+WHERE discharge_date IS NULL;
+
+-- 6. Show doctor-wise appointments
+SELECT d.name AS doctor, COUNT(a.appointment_id) AS total_appointments
+FROM doctor d
+LEFT JOIN appointment a ON d.doctor_id = a.doctor_id
+GROUP BY d.name;
