@@ -115,4 +115,24 @@ public class MovieBooking implements ActionListener {
         MovieBooking mb = new MovieBooking();
         mb.createUI();
     }
+
 }
+#for data base table in mysql connector
+    
+    CREATE DATABASE MovieBooking;
+
+USE MovieBooking;
+
+CREATE TABLE movies (
+    movie_id INT PRIMARY KEY,
+    movie_name VARCHAR(100) NOT NULL,
+    timing VARCHAR(50) NOT NULL,
+    available_seats INT NOT NULL
+);
+
+INSERT INTO movies (movie_id, movie_name, timing, available_seats) VALUES
+(101, 'Avatar 2', '7:30 PM', 50),
+(102, 'Inception', '9:00 PM', 30),
+(103, 'Joker', '6:00 PM', 20),
+(104, 'Interstellar', '8:00 PM', 25),
+(105, 'The Dark Knight', '10:00 PM', 40);
