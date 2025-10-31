@@ -134,4 +134,27 @@ public class BankingSystem {
             System.out.println("❌ Account not found.");
         }
     }
+
 }
+#for data base table in mysql connector
+
+    -- 1. Create the banking database
+CREATE DATABASE IF NOT EXISTS banking_system;
+
+-- 2. Use the database
+USE banking_system;
+
+-- 3. Create the accounts table
+CREATE TABLE IF NOT EXISTS accounts (
+    account_id INT AUTO_INCREMENT PRIMARY KEY, -- Unique ID for each account
+    name VARCHAR(100) NOT NULL,                -- Account holder's name
+    balance DOUBLE NOT NULL DEFAULT 0.0,       -- Account balance
+    CHECK (balance >= 0)                       -- Prevent negative balances
+);
+
+-- Optional: Add a sample account
+INSERT INTO accounts (name, balance)
+VALUES ('John Doe', 1000.00);
+
+-- Check the data
+SELECT * FROM accounts;
