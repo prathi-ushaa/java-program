@@ -126,7 +126,6 @@ public class OnlineQuizGUI extends JFrame implements ActionListener {
     public static void main(String[] args) {
         new OnlineQuizGUI();
     }
-
 }
 #for data base table in mysql connector
 
@@ -148,3 +147,4 @@ INSERT INTO questions (question, option1, option2, option3, option4, answer) VAL
 ('Which language is platform-independent?', 'C', 'C++', 'Java', 'Python', 3),
 ('What is 2 + 2?', '3', '4', '5', '6', 2),
 ('Who developed Java?', 'Dennis Ritchie', 'James Gosling', 'Guido van Rossum', 'Bjarne Stroustrup', 2);
+
