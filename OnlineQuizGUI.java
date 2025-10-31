@@ -126,4 +126,25 @@ public class OnlineQuizGUI extends JFrame implements ActionListener {
     public static void main(String[] args) {
         new OnlineQuizGUI();
     }
+
 }
+#for data base table in mysql connector
+
+    
+CREATE DATABASE quizdb;
+USE quizdb;
+
+CREATE TABLE questions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    question VARCHAR(255),
+    option1 VARCHAR(100),
+    option2 VARCHAR(100),
+    option3 VARCHAR(100),
+    option4 VARCHAR(100),
+    answer INT
+);
+
+INSERT INTO questions (question, option1, option2, option3, option4, answer) VALUES
+('Which language is platform-independent?', 'C', 'C++', 'Java', 'Python', 3),
+('What is 2 + 2?', '3', '4', '5', '6', 2),
+('Who developed Java?', 'Dennis Ritchie', 'James Gosling', 'Guido van Rossum', 'Bjarne Stroustrup', 2);
